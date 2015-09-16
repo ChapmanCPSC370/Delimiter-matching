@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Delimiter-matching</h1>
+
+<textarea id="textBox" name="Text1" cols="100" rows="30" placeholder="Copy and paste your code here"></textarea>
+<input type="button" value="Check!" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<script>
+
+//Used to find the location of the problem
+var lineCount = 1;
+var myArray = [];
+
+var oppositeDelimiter = function(ch)
+{
+    switch (ch)
+    {
+        case '(':
+            return ')';
+        case '[':
+            return ']';
+        case '{':
+            return '}';
+        default:
+            break;
+    }
+};
+
+var pushDelimiter = function(ch)
+{
+    switch (ch)
+    {
+        case '(':
+        case '[':
+        case '{':
+            myArray.push(ch);
+            break;
+    }
+};
+
+//Analyzes the code. If there is a problem, it tells the user the location of the problem and the problem itself
+//Using textarea to take user input and read line by line
+$('input[type=button]').click(function () 
+{
+    var line = "";
+    var text = $('#textBox').val().split('\n');
+
+    for (var i = 0; i < text.length; i++)
+    {
+        line = text[i];
+        for (var j = 0; j < line.length; j++)
+        {
+            pushDelimiter(line[j]);
+            switch (line[j])
+            {
+                case ')':
+                case ']':
+                case '}':
+                    if (myArray.length !== 0)
+                    {
+                        var topBracket = myArray.pop();
+                        if (line[j] !== oppositeDelimiter(topBracket))
+                        {
+                            console.log("Line " + lineCount + ": expected " + oppositeDelimiter(topBracket) + ", but found " + line[j] + ".");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        console.log("Line " + lineCount + ": extraneous closing brace " + line[j] + ".");
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        lineCount++;
+    }
+    if (myArray.length !== 0)
+    {
+        console.log("Reached end of code: missing " + oppositeDelimiter(myArray[myArray.length - 1]) + ".");
+    }
+    else if (myArray.length === 0)
+    {
+        console.log("Delimiters in the code are matched.");
+    }
+});
+
+</script>
+</body>
+</html>
