@@ -72,7 +72,7 @@ $('input[type=button]').click(function ()
                     else // Array is empty but the program encounters a closing brace
                     {
                         console.log("Line " + lineCount + ": extraneous closing brace " + line[j] + ".");
-                        return false;
+                        return;
                     }
                     break;
                 default:
@@ -84,11 +84,14 @@ $('input[type=button]').click(function ()
     if (myArray.length !== 0) // Reached end of code but the array is not empty
     {
         console.log("Reached end of code: missing " + oppositeDelimiter(myArray[myArray.length - 1]) + ".");
+        return;
     }
     else if (myArray.length === 0) // Reached end of code and the array is empty
     {
         console.log("Delimiters in the code are matched.");
+        return;
     }
+    return;
 });
 
 </script>
