@@ -1,99 +1,26 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="include/js/script.js"></script>
+	<link rel="stylesheet" href="include/css/main.css">
+</head>
 <body>
-
-<h1>Delimiter-matching</h1>
-
-<textarea id="textBox" name="Text1" cols="100" rows="30" placeholder="Copy and paste your code here"></textarea>
-<input type="button" value="Check!" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
-<script>
-
-var lineCount = 1; // Used to find the location of the problem
-var myArray = []; // Array that only holds opening braces (stack data structure)
-
-// Returns opposite delimiters
-var oppositeDelimiter = function(ch)
-{
-    switch (ch)
-    {
-        case '(':
-            return ')';
-        case '[':
-            return ']';
-        case '{':
-            return '}';
-        default:
-            break;
-    }
-};
-
-// Only opening braces are pushed to the array
-var pushDelimiter = function(ch)
-{
-    switch (ch)
-    {
-        case '(':
-        case '[':
-        case '{':
-            myArray.push(ch);
-            break;
-    }
-};
-
-// Analyzes the code. If there is a problem, it tells the user the location of the problem and the problem itself
-// Using textarea to take user input and read line by line
-$('input[type=button]').click(function () 
-{
-    var line = "";
-    var text = $('#textBox').val().split('\n');
-
-    for (var i = 0; i < text.length; i++)
-    {
-        line = text[i];
-        for (var j = 0; j < line.length; j++)
-        {
-            pushDelimiter(line[j]);
-            switch (line[j])
-            {
-                case ')':
-                case ']':
-                case '}':
-                    if (myArray.length !== 0)
-                    {
-                        var topBracket = myArray.pop();
-                        if (line[j] !== oppositeDelimiter(topBracket)) // Closing brace does not match the most recent opening brace
-                        {
-                            console.log("Line " + lineCount + ": expected " + oppositeDelimiter(topBracket) + ", but found " + line[j] + ".");
-                            return;
-                        }
-                    }
-                    else // Array is empty but the program encounters a closing brace
-                    {
-                        console.log("Line " + lineCount + ": extraneous closing brace " + line[j] + ".");
-                        return;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        lineCount++;
-    }
-    if (myArray.length !== 0) // Reached end of code but the array is not empty
-    {
-        console.log("Reached end of code: missing " + oppositeDelimiter(myArray[myArray.length - 1]) + ".");
-        return;
-    }
-    else if (myArray.length === 0) // Reached end of code and the array is empty
-    {
-        console.log("Delimiters in the code are matched.");
-        return;
-    }
-    return;
-});
-
-</script>
+<body>
+    <div id="container">
+        <div id="text-input">
+            	<h1 align="center">Delimiter-matching</h1>
+            <div id="success-alert" class="alert alert-success custom-alerts hidden" role="alert">
+            	<span><b>Success!</b> We found no errors in your code.</span>
+            </div>
+            <div id="error-alert" class="alert alert-danger custom-alerts hidden" role="alert"><span></span></div>
+            <textarea id="code-input-tb" name="Text1" cols="100" rows="30" placeholder="Copy and paste your code here"></textarea>
+        </div>
+        <div id="tools">
+            <input class="btn btn-primary btn-lg" id="submit-btn" type="button" onclick="return analyze();" value="Check!" />
+        </div>
+    </div>
 </body>
 </html>
