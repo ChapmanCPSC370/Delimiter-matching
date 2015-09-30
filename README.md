@@ -16,4 +16,5 @@ http://www.w3schools.com/
 #Project Updates
 
 Contributor: Nicholas Corder
+
 9/22/15 - Refactored project so code looks cleaner, and is more readable. Restructured project into a more standard file structure. Cleaned up the UI, and switched the project over to boostrap 3 so it looks high class.
